@@ -490,6 +490,7 @@ enum class CongestionControlType : uint8_t {
   BBR2,
   BBRTesting,
   StaticCwnd,
+  SwitchableCC,
   None,
   // NOTE: MAX should always be at the end
   MAX

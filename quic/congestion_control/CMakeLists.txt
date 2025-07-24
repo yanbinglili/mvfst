@@ -22,6 +22,7 @@ add_library(
   StaticCwndCongestionController.cpp
   TokenlessPacer.cpp
   EcnL4sTracker.cpp
+  SwitchableCC.cpp
 )
 
 set_property(TARGET mvfst_cc_algo PROPERTY VERSION ${PACKAGE_VERSION})

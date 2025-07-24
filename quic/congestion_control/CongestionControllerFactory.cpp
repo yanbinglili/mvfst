@@ -15,7 +15,7 @@
 #include <quic/congestion_control/Copa2.h>
 #include <quic/congestion_control/NewReno.h>
 #include <quic/congestion_control/QuicCubic.h>
-
+#include <quic/congestion_control/SwitchableCC.h>
 #include <memory>
 
 namespace quic {
@@ -55,6 +55,11 @@ DefaultCongestionControllerFactory::makeCongestionController(
     case CongestionControlType::BBR2: {
       auto bbr2 = std::make_unique<Bbr2CongestionController>(conn);
       congestionController = std::move(bbr2);
+      break;
+    }
+    case CongestionControlType::SwitchableCC: {
+      auto swiCC = std::make_unique<SwitchableCC>(conn);
+      congestionController = std::move(swiCC);
       break;
     }
     case CongestionControlType::StaticCwnd: {
