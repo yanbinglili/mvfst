@@ -32,6 +32,8 @@ std::string_view congestionControlTypeToString(CongestionControlType type) {
       return kCongestionControlStaticCwndStr;
     case CongestionControlType::None:
       return kCongestionControlNoneStr;
+    case CongestionControlType::SwitchableCC:
+      return kCongestionControlSwitchableStr;
     case CongestionControlType::MAX:
       return "MAX";
     default:
@@ -59,6 +61,8 @@ std::optional<CongestionControlType> congestionControlStrToType(
     return quic::CongestionControlType::StaticCwnd;
   } else if (str == kCongestionControlNoneStr) {
     return quic::CongestionControlType::None;
+  } else if (str == kCongestionControlSwitchableStr) {
+    return quic::CongestionControlType::SwitchableCC;
   }
   return std::nullopt;
 }

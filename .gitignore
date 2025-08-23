@@ -195,8 +195,8 @@ cmake-build-debug
 /mvfst-config.cmake
 /.idea/prettier.xml
 /.idea/inspectionProfiles/Project_Default.xml
-/quic/congestion_control/SwitchableCC.cpp
-/quic/congestion_control/SwitchableCC.h
+/quic/congestion_control/SwitchableCC_old.cpp
+/quic/congestion_control/SwitchableCC_old.h
 /.cmake/api/v1/reply/target-mvfst_ack_scheduler-Release-d56bba5faf425178c909.json
 /.cmake/api/v1/reply/target-mvfst_async_udp_socket-Release-ed30e4692afae3ee768e.json
 /.cmake/api/v1/reply/target-mvfst_batch_writer-Release-838d136b981c3c16cb9e.json

@@ -23,6 +23,8 @@ add_library(
   TokenlessPacer.cpp
   EcnL4sTracker.cpp
   SwitchableCC.cpp
+  SwitchableCCFactory.cpp
+  AsyncLogger.cpp
 )
 
 set_property(TARGET mvfst_cc_algo PROPERTY VERSION ${PACKAGE_VERSION})
