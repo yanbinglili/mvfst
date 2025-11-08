@@ -14,6 +14,8 @@ namespace quic {
 
 std::string_view congestionControlTypeToString(CongestionControlType type) {
   switch (type) {
+    case CongestionControlType::FastCC:
+      return kCongestionControlFastCCStr;
     case CongestionControlType::Cubic:
       return kCongestionControlCubicStr;
     case CongestionControlType::BBR:
@@ -63,6 +65,8 @@ std::optional<CongestionControlType> congestionControlStrToType(
     return quic::CongestionControlType::None;
   } else if (str == kCongestionControlSwitchableStr) {
     return quic::CongestionControlType::SwitchableCC;
+  } else if (str == kCongestionControlFastCCStr) {
+    return quic::CongestionControlType::FastCC;
   }
   return std::nullopt;
 }

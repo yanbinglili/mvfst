@@ -19,6 +19,7 @@
 #include <quic/congestion_control/QuicCubic.h>
 
 #include "AsyncLogger.h"
+#include "FastCC.h"
 
 
 namespace quic {
@@ -70,6 +71,11 @@ std::unique_ptr<CongestionController> SwitchableCCFactory::makeCongestionControl
     case CongestionControlType::SwitchableCC: {
       auto swiCC = std::make_unique<SwitchableCC>(conn, evb);
       congestionController = std::move(swiCC);
+      break;
+    }
+    case CongestionControlType::FastCC: {
+      auto fastCC = std::make_unique<FastCC>(conn);
+      congestionController = std::move(fastCC);
       break;
     }
     case CongestionControlType::StaticCwnd: {

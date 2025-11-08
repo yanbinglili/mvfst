@@ -25,6 +25,8 @@ add_library(
   SwitchableCC.cpp
   SwitchableCCFactory.cpp
   AsyncLogger.cpp
+  FastCC.cpp
+  Pico_FastCC.cpp
 )
 
 set_property(TARGET mvfst_cc_algo PROPERTY VERSION ${PACKAGE_VERSION})
