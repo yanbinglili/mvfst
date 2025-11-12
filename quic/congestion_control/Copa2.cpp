@@ -16,8 +16,8 @@ using namespace std::chrono;
 
 Copa2::Copa2(QuicConnectionStateBase& conn)
     : conn_(conn),
-      cwndBytes_(conn.transportSettings.initCwndInMss * conn.udpSendPacketLen),
       minRTTFilter_(kCopa2MinRttWindowLength.count(), 0us, 0) {
+  cwndBytes_ = conn.transportSettings.initCwndInMss * conn.udpSendPacketLen;
   VLOG(10) << __func__ << " writable=" << Copa2::getWritableBytes()
            << " cwnd=" << cwndBytes_
            << " inflight=" << conn_.lossState.inflightBytes << " " << conn_;

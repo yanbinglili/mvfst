@@ -176,10 +176,20 @@ struct CongestionController {
     return state;
   }
 
+  void setCwndBytes(uint64_t bytes) {
+    cwndBytes_ = bytes;
+  }
+
   /**
    * Enable experimental settings of the congestion controller
    */
   virtual void setExperimental(bool /*experimental*/) {}
+  // void updatePacing() {
+  //
+  // }
+
+protected:
+  uint64_t cwndBytes_;
 };
 
 } // namespace quic

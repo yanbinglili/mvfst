@@ -100,8 +100,22 @@ void SwitchableCC::switchTo(const CongestionControlType type){
         it = pool_.find(type);
         assert(it != pool_.end());
     }
-    impl_ = it->second.get();
-    cur_  = type;
+
+    auto* new_cc = it->second.get();
+    uint64_t global_cwnd = impl_->getCongestionWindow();
+
+    uint64_t cwnd_limit = 0;
+    //hand over congestion windows
+    if (cur_ == CongestionControlType::Cubic or cur_ == CongestionControlType::NewReno) {
+        cwnd_limit = conn_.transportSettings.maxCwndInMss * conn_.udpSendPacketLen;
+    }else {
+        cwnd_limit = 2 * conn_.transportSettings.maxCwndInMss * conn_.udpSendPacketLen;
+    }
+
+    new_cc->setCwndBytes(std::min<uint64_t>(global_cwnd, cwnd_limit));
+
+    impl_ = new_cc;
+    cur_ = type;
 }
 
 } // namespace quic

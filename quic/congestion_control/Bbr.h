@@ -239,7 +239,7 @@ class BbrCongestionController : public CongestionController {
   // connection is no longer in recovery
   Optional<TimePoint> endOfRecovery_;
   // Cwnd in bytes
-  uint64_t cwnd_;
+  //  uint64_t cwnd_;
   // Initial cwnd in bytes
   uint64_t initialCwnd_;
   // Congestion window when the connection is in recovery

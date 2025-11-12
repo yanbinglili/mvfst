@@ -33,7 +33,6 @@ namespace quic {
 
 BbrCongestionController::BbrCongestionController(QuicConnectionStateBase& conn)
     : conn_(conn),
-      cwnd_(conn.udpSendPacketLen * conn.transportSettings.initCwndInMss),
       initialCwnd_(
           conn.udpSendPacketLen * conn.transportSettings.initCwndInMss),
       recoveryWindow_(
@@ -41,14 +40,15 @@ BbrCongestionController::BbrCongestionController(QuicConnectionStateBase& conn)
       pacingWindow_(
           conn.udpSendPacketLen * conn.transportSettings.initCwndInMss),
       pacingGainCycles_(kPacingGainCycles.begin(), kPacingGainCycles.end()),
-      maxAckHeightFilter_(bandwidthWindowLength(kNumOfCycles), 0, 0) {}
+      maxAckHeightFilter_(bandwidthWindowLength(kNumOfCycles), 0, 0) {
+  cwndBytes_ = conn.udpSendPacketLen * conn.transportSettings.initCwndInMss;
+}
 
 BbrCongestionController::BbrCongestionController(
     QuicConnectionStateBase& conn,
     uint64_t cwndBytes,
     std::chrono::microseconds minRtt)
     : conn_(conn),
-      cwnd_(cwndBytes),
       initialCwnd_(
           conn.udpSendPacketLen * conn.transportSettings.initCwndInMss),
       recoveryWindow_(
@@ -59,6 +59,7 @@ BbrCongestionController::BbrCongestionController(
   if (conn_.pacer) {
     conn_.pacer->refreshPacingRate(pacingWindow_, minRtt);
   }
+  cwndBytes_ = cwndBytes;
 }
 
 CongestionControlType BbrCongestionController::type() const noexcept {
@@ -560,16 +561,16 @@ void BbrCongestionController::updateCwnd(
   }
 
   if (btlbwFound_) {
-    cwnd_ = std::min(targetCwnd, cwnd_ + ackedBytes);
+    cwndBytes_ = std::min(targetCwnd, cwndBytes_ + ackedBytes);
   } else if (
-      cwnd_ < targetCwnd || conn_.lossState.totalBytesAcked < initialCwnd_) {
+      cwndBytes_ < targetCwnd || conn_.lossState.totalBytesAcked < initialCwnd_) {
     // This is a bit strange. The argument here is that if we haven't finished
     // STARTUP, then forget about the gain calculation.
-    cwnd_ += ackedBytes;
+    cwndBytes_ += ackedBytes;
   }
 
-  cwnd_ = boundedCwnd(
-      cwnd_,
+  cwndBytes_ = boundedCwnd(
+      cwndBytes_,
       conn_.udpSendPacketLen,
       conn_.transportSettings.maxCwndInMss,
       kMinCwndInMssForBbr);
@@ -625,10 +626,10 @@ uint64_t BbrCongestionController::getCongestionWindow() const noexcept {
   // TODO: For Recovery in Startup, Chromium has another config option to set if
   // cwnd should be using the conservative recovery cwnd, or regular cwnd.
   if (inRecovery()) {
-    return std::min(cwnd_, recoveryWindow_);
+    return std::min(cwndBytes_, recoveryWindow_);
   }
 
-  return cwnd_;
+  return cwndBytes_;
 }
 
 Optional<Bandwidth> BbrCongestionController::getBandwidth() const noexcept {

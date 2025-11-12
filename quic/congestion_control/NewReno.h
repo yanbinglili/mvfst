@@ -54,7 +54,6 @@ class NewReno : public CongestionController {
  private:
   QuicConnectionStateBase& conn_;
   uint64_t ssthresh_;
-  uint64_t cwndBytes_;
   Optional<TimePoint> endOfRecovery_;
 };
 } // namespace quic

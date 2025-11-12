@@ -49,9 +49,9 @@ Bbr2CongestionController::Bbr2CongestionController(
       // length by 1
       maxBwFilter_(kMaxBwFilterLen - 1, Bandwidth(), 0),
       probeRttMinTimestamp_(Clock::now()),
-      maxExtraAckedFilter_(kMaxExtraAckedFilterLen, 0, 0),
-      cwndBytes_(
-          conn_.udpSendPacketLen * conn_.transportSettings.initCwndInMss) {
+      maxExtraAckedFilter_(kMaxExtraAckedFilterLen, 0, 0)
+        {
+  cwndBytes_ = conn_.udpSendPacketLen * conn_.transportSettings.initCwndInMss;
   resetCongestionSignals();
   resetFullBw();
   resetShortTermModel();

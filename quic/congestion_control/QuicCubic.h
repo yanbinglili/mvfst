@@ -139,7 +139,6 @@ class Cubic : public CongestionController {
   bool isRecovered(TimePoint packetSentTime) noexcept;
 
   QuicConnectionStateBase& conn_;
-  uint64_t cwndBytes_;
   // the value of cwndBytes_ at last loss event
   Optional<uint64_t> lossCwndBytes_;
   // the value of ssthresh_ at the last loss event

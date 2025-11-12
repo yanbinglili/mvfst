@@ -53,7 +53,6 @@ class Copa2 : public CongestionController {
   void manageLossyMode(Optional<TimePoint> sentTime);
 
   QuicConnectionStateBase& conn_;
-  uint64_t cwndBytes_;
 
   // In packets
   uint64_t alphaParam_{10};

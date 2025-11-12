@@ -177,7 +177,7 @@ class Bbr2CongestionController : public CongestionController {
   PacketNum largestLostPacketNumInRound_{0};
 
   // Cwnd
-  uint64_t cwndBytes_;
+  // uint64_t cwndBytes_;
   uint64_t previousCwndBytes_{0};
   bool cwndLimitedInRound_{false};
 

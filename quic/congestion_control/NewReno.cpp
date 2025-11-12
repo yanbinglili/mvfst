@@ -16,14 +16,15 @@ constexpr int kRenoLossReductionFactorShift = 1;
 
 NewReno::NewReno(QuicConnectionStateBase& conn)
     : conn_(conn),
-      ssthresh_(std::numeric_limits<uint32_t>::max()),
-      cwndBytes_(conn.transportSettings.initCwndInMss * conn.udpSendPacketLen) {
+      ssthresh_(std::numeric_limits<uint32_t>::max()){
+  cwndBytes_ = conn.transportSettings.initCwndInMss * conn.udpSendPacketLen;
+
   cwndBytes_ = boundedCwnd(
       cwndBytes_,
       conn_.udpSendPacketLen,
       conn_.transportSettings.maxCwndInMss,
       conn_.transportSettings.minCwndInMss);
-}
+  }
 
 void NewReno::onRemoveBytesFromInflight(uint64_t bytes) {
   subtractAndCheckUnderflow(conn_.lossState.inflightBytes, bytes);

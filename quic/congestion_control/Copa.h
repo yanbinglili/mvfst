@@ -82,7 +82,6 @@ class Copa : public CongestionController {
       VelocityState::Direction newDirection,
       const TimePoint ackTime);
   QuicConnectionStateBase& conn_;
-  uint64_t cwndBytes_;
 
   bool isSlowStart_;
   // time at which cwnd was last doubled during slow start

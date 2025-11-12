@@ -17,13 +17,13 @@ using namespace std::chrono;
 
 Copa::Copa(QuicConnectionStateBase& conn)
     : conn_(conn),
-      cwndBytes_(conn.transportSettings.initCwndInMss * conn.udpSendPacketLen),
       isSlowStart_(true),
       minRTTFilter_(kMinRTTWindowLength.count(), 0us, 0),
       standingRTTFilter_(
           100000, /*100ms*/
           0us,
           0) {
+  cwndBytes_ = conn.transportSettings.initCwndInMss * conn.udpSendPacketLen;
   VLOG(10) << __func__ << " writable=" << getWritableBytes()
            << " cwnd=" << cwndBytes_
            << " inflight=" << conn_.lossState.inflightBytes << " " << conn_;
